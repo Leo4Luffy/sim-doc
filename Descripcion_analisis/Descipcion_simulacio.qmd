@@ -1,0 +1,101 @@
+---
+title: 'Descripción del análisis a realizar con la simulación'
+format:
+  #docx:
+    #toc: true # La opción toc permite incluir una tabla de contenido.
+    #toc-title: Contenido
+  pdf
+    #toc: true
+    #toc-title: Tabla de contenidos
+#bibliography: referencias.bib
+lang: es
+---
+<!--
+NOTA: Se cargan los paquetes de R.
+-->
+
+```{r}
+#| label: Carga de paquetes R
+#| eval: true
+#| echo: false
+
+pacman::p_load(tidyverse)
+```
+
+<!--
+NOTA: Se realiza una visualización sobre las ómicas.
+-->
+
+```{r}
+#| label: fig-1
+#| fig-cap: 'Descripción de datos ómicos.'
+#| eval: true
+#| echo: false
+#| warning: false
+#| fig-pos: 'H'
+#| out-width: 100%
+#| out-height: 100%
+
+omicas <- tibble(
+  x = c(17.6, 17.6, 18.6, 19.6, 20.6, 21.6),
+  y = c(10.7, 12.2, 13.2, 14.2, 15.2, 16.2),
+  text = c(
+    '**Genoma**',
+    '**Epigenoma**',
+    '**Transcriptoma**',
+    '**Proteoma**',
+    '**Metaboloma**',
+    '**Microbioma**'
+    )
+  )
+
+tibble(x = 1.0, y = 1.0) |>
+  ggplot(aes(x = x, y = y)) +
+  
+  # Se dibuja la ómica del microbioma:
+  annotate(geom = 'rect', xmin = 20.0, xmax = 16.0, ymin = 20.0, ymax = 16.0, colour = 'white', fill = 'white', alpha = 1.0, linetype = 'solid') +
+  annotate(geom = 'rect', xmin = 20.0, xmax = 16.0, ymin = 20.0, ymax = 16.0, colour = 'orange', fill = 'orange', alpha = 0.1, linetype = 'solid') +
+
+  # Se dibuja la ómica del metaboloma:
+  annotate(geom = 'rect', xmin = 15.0, xmax = 19.0, ymin = 15.0, ymax = 19.0, colour = 'white', fill = 'white', alpha = 1.0, linetype = 'solid') +
+  annotate(geom = 'rect', xmin = 15.0, xmax = 19.0, ymin = 15.0, ymax = 19.0, colour = 'green', fill = 'green', alpha = 0.1, linetype = 'solid') +
+
+  # Se dibuja la ómica del proteoma:
+  annotate(geom = 'rect', xmin = 14.0, xmax = 18.0, ymin = 14.0, ymax = 18.0, colour = 'white', fill = 'white', alpha = 1.0, linetype = 'solid') +
+  annotate(geom = 'rect', xmin = 14.0, xmax = 18.0, ymin = 14.0, ymax = 18.0, colour = 'red', fill = 'red', alpha = 0.1, linetype = 'solid') +
+
+  # Se dibuja la ómica del transcriptoma:
+  annotate(geom = 'rect', xmin = 13.0, xmax = 17.0, ymin = 13.0, ymax = 17.0, colour = 'white', fill = 'white', alpha = 1.0, linetype = 'solid') +
+  annotate(geom = 'rect', xmin = 13.0, xmax = 17.0, ymin = 13.0, ymax = 17.0, colour = 'cyan', fill = 'cyan', alpha = 0.1, linetype = 'solid') +
+
+  # Se dibuja la ómica del epigenoma:
+  annotate(geom = 'rect', xmin = 12.0, xmax = 16.0, ymin = 12.0, ymax = 16.0, colour = 'white', fill = 'white', alpha = 1.0, linetype = 'solid') +
+  annotate(geom = 'rect', xmin = 12.0, xmax = 16.0, ymin = 12.0, ymax = 16.0, colour = 'yellow', fill = 'yellow', alpha = 0.1, linetype = 'solid') +
+  
+  # Se dibuja la ómica del genoma:
+  annotate(geom = 'rect', xmin = 12.0, xmax = 16.0, ymin = 11.25, ymax = 10.5, colour = 'white', fill = 'white', alpha = 1.0, linetype = 'solid') +
+  annotate(geom = 'rect', xmin = 12.0, xmax = 16.0, ymin = 11.25, ymax = 10.5, colour = 'black', fill = 'black', alpha = 0.1, linetype = 'solid') +
+
+  # Se añaden las etiquetas de texto que indica la capa ómica:
+  ggtext::geom_textbox(
+    data = omicas,
+    aes(x = x, y = y, label = text),
+    width = unit(2.0, 'cm'),
+    height = unit(0.5, 'cm'),
+    size = 2.4,  # Ajusta el tamaño del texto
+    ) +
+
+  # Se dibujan las fechas para indicar los ejes "x" (genética) e "y" (ambiente):
+  geom_curve(x = 11.6, xend = 16.4, y = 10.0, yend = 10.0, arrow = arrow(length = unit(0.1, 'inch')), linewidth = 0.8, color = 'black', curvature = 0.0, linetype = 'solid') +
+  geom_curve(x = 11.6, xend = 11.6, y = 10.0, yend = 16.4, arrow = arrow(length = unit(0.1, 'inch')), linewidth = 0.8, color = 'black', curvature = 0.0, linetype = 'solid') +
+  annotate(geom = 'text', x = 14.0, y = 9.7, label = 'Genética', size = 2.8, colour = 'black') +
+  annotate(geom = 'text', x = 11.3, y = 13.2, label = 'Ambiente', size = 2.8, colour = 'black', angle = 90) +
+  
+  scale_x_continuous(limits = c(11.3, 22.6)) +
+  scale_y_continuous(limits = c(9.7, 20.2)) +
+  coord_fixed() + # Para asegurar que el gráfico sea cuadrado
+  theme_bw() +
+  theme(axis.text = element_blank(),
+        axis.ticks = element_blank(),
+        axis.title = element_blank())
+```
